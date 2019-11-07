@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Hello IMS18!</title>
+    </head>
+    <body>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+
+        <div th:switch="${kurs}">
+            <div class="row">
+                <h2 th:case="null">No courses yet!</h2>
+                <div th:case="*">
+                    <h2>Courses</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="kurs : ${kurs}">
+                                <td th:text="${kurs.id}"></td>
+                                <td th:text="${kurs.name}"></td>
+                                <td th:text="${kurs.description}"></td>
+                                <td><a th:href="@{/edit_course/{id}(id=${kurs.id})}">edit</a></td>
+                                <td><a th:href="@{/delete_course/{id}(id=${kurs.id})}">remove</a></td>
+                            </tr>
+                        </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <p><a th:href="@{/add_course}">Add a new course</a></p>
+        <br><br>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </body>
+</html>
